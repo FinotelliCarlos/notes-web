@@ -11,6 +11,7 @@ export function NewNoteCard({
   const [shouldShowOnboarding, setShouldShowOnboarding] =
     useState<boolean>(true);
   const [contentNote, setContentNote] = useState<string>("");
+  const [isRecording, setIsRecording] = useState<boolean>(false);
 
   function handleEditorToWriteNote() {
     setShouldShowOnboarding(false);
@@ -32,6 +33,10 @@ export function NewNoteCard({
     setShouldShowOnboarding(true);
 
     toast.success("Nota criada com sucesso!");
+  }
+
+  function handleStartRecording() {
+    setIsRecording(true);
   }
 
   return (
@@ -61,11 +66,16 @@ export function NewNoteCard({
               {shouldShowOnboarding && (
                 <p className="text-sm leading-6 text-slate-400">
                   Comece{" "}
-                  <button className="text-lime-400 hover:underline font-medium">
+                  <button
+                    type="button"
+                    onClick={handleStartRecording}
+                    className="text-lime-400 hover:underline font-medium"
+                  >
                     gravando uma nota
                   </button>{" "}
                   em áudio ou se preferir{" "}
                   <button
+                    type="button"
                     onClick={handleEditorToWriteNote}
                     className="text-lime-400 hover:underline font-medium"
                   >
@@ -85,12 +95,21 @@ export function NewNoteCard({
               )}
             </div>
 
-            <button
-              type="submit"
-              className="w-full bg-lime-400 py-4 text-center text-sm text-lime-950 outline-none font-medium hover:bg-lime-500"
-            >
-              Salvar nota
-            </button>
+            {isRecording ? (
+              <button
+                type="submit"
+                className="w-full bg-slate-900 py-4 text-center text-sm text-slate-300 outline-none font-medium hover:text-slate-100"
+              >
+                Gravando (clique p/ interromper)
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="w-full bg-lime-400 py-4 text-center text-sm text-lime-950 outline-none font-medium hover:bg-lime-500"
+              >
+                Salvar nota
+              </button>
+            )}
           </form>
         </Dialog.Content>
       </Dialog.Portal>

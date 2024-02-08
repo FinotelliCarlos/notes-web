@@ -3,7 +3,7 @@ import logo from "./assets/logo.svg";
 import { NewNoteCard } from "./components/new-note-card";
 import { NoteCard } from "./components/note-card";
 
-interface INote {
+export interface INote {
   id: string;
   date: Date;
   content: string;
@@ -34,6 +34,14 @@ export function App() {
 
     localStorage.setItem("notes", JSON.stringify(notesArray));
   }
+
+  const handleRemoveNote = (noteId: string) => {
+    const newNotesArrey = notes.filter((note) => note.id !== noteId);
+
+    setNotes(newNotesArrey);
+
+    localStorage.setItem("notes", JSON.stringify(newNotesArrey));
+  };
 
   function handleSearch(event: ChangeEvent<HTMLInputElement>) {
     const query = event.target.value;
@@ -66,7 +74,13 @@ export function App() {
         <NewNoteCard onNoteCreated={onNoteCreated} />
 
         {filteredNotes.map((note) => {
-          return <NoteCard key={note.id} note={note} />;
+          return (
+            <NoteCard
+              key={note.id}
+              note={note}
+              handleRemoveNote={handleRemoveNote}
+            />
+          );
         })}
       </div>
     </div>
