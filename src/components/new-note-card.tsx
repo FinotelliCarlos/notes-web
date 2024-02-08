@@ -27,6 +27,11 @@ export function NewNoteCard({
   function handleSaveNote(event: FormEvent) {
     event.preventDefault();
 
+    if (contentNote === "") {
+      toast.error("O conteudo da nota não pode ser vazio!");
+      return;
+    }
+
     onNoteCreated(contentNote);
 
     setContentNote("");
@@ -37,6 +42,10 @@ export function NewNoteCard({
 
   function handleStartRecording() {
     setIsRecording(true);
+  }
+
+  function handleStopRecording() {
+    setIsRecording(false);
   }
 
   return (
@@ -58,7 +67,7 @@ export function NewNoteCard({
             <X className="size-5" />
           </Dialog.Close>
 
-          <form onSubmit={handleSaveNote} className="flex-1 flex flex-col">
+          <form className="flex-1 flex flex-col">
             <div className="flex flex-1 flex-col gap-3 p-5">
               <span className="text-sm font-medium text-slate-300">
                 Adicionar nota
@@ -97,14 +106,17 @@ export function NewNoteCard({
 
             {isRecording ? (
               <button
-                type="submit"
-                className="w-full bg-slate-900 py-4 text-center text-sm text-slate-300 outline-none font-medium hover:text-slate-100"
+                type="button"
+                className="w-full flex items-center justify-center gap-2 bg-slate-900 py-4 text-center text-sm text-slate-300 outline-none font-medium hover:text-slate-100"
+                onClick={handleStopRecording}
               >
+                <div className="size-3 rounded-full bg-red-500 animate-pulse" />
                 Gravando (clique p/ interromper)
               </button>
             ) : (
               <button
-                type="submit"
+                type="button"
+                onClick={handleSaveNote}
                 className="w-full bg-lime-400 py-4 text-center text-sm text-lime-950 outline-none font-medium hover:bg-lime-500"
               >
                 Salvar nota
